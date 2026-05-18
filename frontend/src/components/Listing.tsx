@@ -21,24 +21,47 @@ interface ListingProps {
 
 export const Listing = ({ featuredListings }: ListingProps): JSX.Element => {
   return (
-    <div className="listings">
+    <div
+      className="listings"
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gap: 12,
+      }}
+    >
       {featuredListings.map((eachData, idx) => (
         <div
           key={eachData.id ?? idx}
           className="listing-card"
-          style={{
-            border: "1px solid #ddd",
-            padding: 12,
-            marginBottom: 12,
-            width: "18rem",
-          }}
+          style={{ border: "1px solid #ddd", padding: 12, borderRadius: 6 }}
         >
-          <h3>{eachData.title}</h3>
+          <h3 style={{ marginTop: 0 }}>{eachData.title}</h3>
           <div>Beds: {eachData.numOfBeds ?? "N/A"}</div>
           <div>Price: {eachData.costPerNight ?? "N/A"}</div>
           <div>
-            Amenities:{" "}
-            {eachData?.amenities.map((eachData) => eachData.category)}
+            Amenities:
+            <ul style={{ margin: "6px 0 0 12px" }}>
+              {eachData.amenities?.map((amenity, ai) => (
+                <li key={amenity.id ?? `${eachData.id}-am-${ai}`}>
+                  {`${amenity?.name ?? "Unnamed"} — ${amenity?.category ?? "N/A"}`}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div style={{ marginTop: 12 }}>
+            <button
+              type="button"
+              style={{
+                padding: "6px 12px",
+                background: "#0d6efd",
+                color: "#fff",
+                border: "none",
+                borderRadius: 4,
+                cursor: "pointer",
+              }}
+            >
+              more info
+            </button>
           </div>
         </div>
       ))}
