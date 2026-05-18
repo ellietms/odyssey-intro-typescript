@@ -1,12 +1,9 @@
+import { Listing } from "./components/Listing";
 
-
-function App() {
-
+export const App = () => {
   return (
     <div>
-      <p>test</p>
+      <Listing data={} />
     </div>
-  )
-}
-
-export default App
+  );
+};
