@@ -1,10 +1,9 @@
-// TODO
-
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { readFileSync } from "fs";
 import path from "path";
 import { gql } from "graphql-tag";
+
 import { resolvers } from "./resolvers/resolver";
 import { ListingAPI } from "./datasources/listing-api";
 
@@ -19,18 +18,20 @@ const typeDefs = gql(
 
 async function startApolloServer() {
   const server = new ApolloServer({ typeDefs, resolvers });
+  
+  //  startStandaloneServer : web framework integration function
   const { url } = await startStandaloneServer(server, {
     // server config
-    context: async() => {
+    context: async () => {
+      const { cache } = server;
+
       return {
-        datasource :{
-          ListingAPI : new ListingAPI()
-        }
-      }
+        dataSources: {
+          listingAPI: new ListingAPI({ cache }),
+        },
+      };
     },
   });
-
-  
 
   console.log(`
     🚀  Server is running!
