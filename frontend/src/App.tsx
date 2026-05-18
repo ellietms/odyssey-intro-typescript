@@ -1,14 +1,10 @@
-import { useQuery } from "@apollo/client/react";
 import { Routes, Route } from "react-router-dom";
-
 import { ListingPage } from "./components/ListingPage";
-import { GET_Featured_LISTING } from "./gql/getListing.gql";
-import type { GetFeaturedQuery } from "./gql/generated";
+import { ListingDetail } from "./components/ListingDetail";
 
 export const App = () => {
-  return (
-    <div>
-      <ListingPage />
-    </div>
-  );
+  <Routes>
+    <Route path="/" element={<ListingPage />} />
+    <Route path="/listing/:id" element={<ListingDetail />} />
+  </Routes>;
 };

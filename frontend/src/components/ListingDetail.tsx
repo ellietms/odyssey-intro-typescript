@@ -1,14 +1,37 @@
+import { useQuery } from "@apollo/client/react";
 import type { JSX } from "react";
-import type { Listing } from "../gql/generated";
+import { GET_LISTING_DETAILS } from "../gql/getListingDetail";
 
-export const ListingDetail = (data: Listing): JSX.Element => {
+type Amenity = {
+  name: string;
+  category: string;
+};
+
+type Listing = {
+  title: string;
+  numOfBeds: number;
+  costPerNight: number;
+  amenities: Amenity[];
+};
+
+type GetListingData = {
+  getListing: Listing;
+};
+
+export const ListingDetail = (): JSX.Element => {
+  const { data, loading, error } = useQuery<GetListingData>(GET_LISTING_DETAILS);
+
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <div>
-      <h2> Title: {data.title} </h2>
-      <p> Number of beds: {data.numOfBeds} </p>
-      <p> Cost per night: {data.costPerNight} </p>
-      {data?.amenities.map((eachData) => (
-        <p>
+      <h2> Title: {data.getListing.title} </h2>
+      <p> Number of beds: {data.getListing.numOfBeds} </p>
+      <p> Cost per night: {data.getListing.costPerNight} </p>
+      {data?.getListing.amenities.map((eachData) => (
+        <p key={eachData.name}>
           {" "}
           {eachData.name} - {eachData.category}{" "}
         </p>
@@ -16,3 +39,4 @@ export const ListingDetail = (data: Listing): JSX.Element => {
     </div>
   );
 };
+

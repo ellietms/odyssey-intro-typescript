@@ -10,11 +10,14 @@ import { App } from "./App";
 
 const root = createRoot(document.getElementById("root")!);
 
+// Cast App to a React component type so TypeScript accepts it as a JSX element
+const AppComponent = App as unknown as React.ComponentType<any>;
+
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <BrowserRouter>
-        <App />
+        <AppComponent />
       </BrowserRouter>
     </ApolloProvider>
   </React.StrictMode>,

@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client/react";
 import type { JSX } from "react";
 import { GET_Featured_LISTING } from "../gql/getListing.gql";
+import { Link } from "react-router";
 
 type Amenity = {
   id?: string | number | null;
@@ -21,7 +22,8 @@ type GetFeaturedListingQuery = {
 };
 
 export const ListingPage = (): JSX.Element => {
-  const { data, loading, error } = useQuery<GetFeaturedListingQuery>(GET_Featured_LISTING);
+  const { data, loading, error } =
+    useQuery<GetFeaturedListingQuery>(GET_Featured_LISTING);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -55,19 +57,21 @@ export const ListingPage = (): JSX.Element => {
             </ul>
           </div>
           <div style={{ marginTop: 12 }}>
-            <button
-              type="button"
-              style={{
-                padding: "6px 12px",
-                background: "#0d6efd",
-                color: "#fff",
-                border: "none",
-                borderRadius: 4,
-                cursor: "pointer",
-              }}
-            >
-              more info
-            </button>
+            <Link to={`/listing/${eachData.id}`}>
+              <button
+                type="button"
+                style={{
+                  padding: "6px 12px",
+                  background: "#0d6efd",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 4,
+                  cursor: "pointer",
+                }}
+              >
+                more info
+              </button>
+            </Link>
           </div>
         </div>
       ))}
