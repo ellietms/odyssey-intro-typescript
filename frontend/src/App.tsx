@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { Listing } from "./components/Listing";
 import { GET_Featured_LISTING } from "./gql/getListing.gql";
 import type { GetFeaturedQuery } from "./gql/generated";
