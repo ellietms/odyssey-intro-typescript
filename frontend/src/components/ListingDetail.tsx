@@ -1,5 +1,7 @@
 import { useQuery } from "@apollo/client/react";
 import type { JSX } from "react";
+import { useParams } from "react-router-dom";
+
 import { GET_LISTING_DETAILS } from "../gql/getListingDetail";
 
 type Amenity = {
@@ -19,8 +21,16 @@ type GetListingData = {
 };
 
 export const ListingDetail = (): JSX.Element => {
-  const { data, loading, error } = useQuery<GetListingData>(GET_LISTING_DETAILS);
+  const {id} = useParams()
 
+  const { data, loading, error } = useQuery<GetListingData>(
+    GET_LISTING_DETAILS,
+    {
+      variables: {
+        id: id ?? ""
+      },
+    },
+  );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -39,4 +49,3 @@ export const ListingDetail = (): JSX.Element => {
     </div>
   );
 };
-
