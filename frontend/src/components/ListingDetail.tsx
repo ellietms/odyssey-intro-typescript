@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client/react";
 import type { JSX } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { GET_LISTING_DETAILS } from "../gql/getListingDetail";
 
@@ -21,13 +21,13 @@ type GetListingData = {
 };
 
 export const ListingDetail = (): JSX.Element => {
-  const {id} = useParams()
+  const { id } = useParams();
 
   const { data, loading, error } = useQuery<GetListingData>(
     GET_LISTING_DETAILS,
     {
       variables: {
-        id: id ?? ""
+        id: id ?? "",
       },
     },
   );
@@ -37,6 +37,9 @@ export const ListingDetail = (): JSX.Element => {
 
   return (
     <div>
+      <Link to={"/"}>
+        <button> back</button>
+      </Link>
       <h2> Title: {data.getListing.title} </h2>
       <p> Number of beds: {data.getListing.numOfBeds} </p>
       <p> Cost per night: {data.getListing.costPerNight} </p>
