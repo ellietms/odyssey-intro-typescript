@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 
 interface Amenity {
-  id?: string  
+  id?: string;
   name?: string;
   category?: string;
 }
@@ -38,7 +38,7 @@ export const Listing = ({ featuredListings }: ListingProps): JSX.Element => {
           <div>Price: {eachData.costPerNight ?? "N/A"}</div>
           <div>
             Amenities:{" "}
-            {(eachData?.amenities || []).map((a: Amenity) => a.name).join(", ")}
+            {eachData?.amenities.map((eachData) => eachData.category)}
           </div>
         </div>
       ))}

@@ -8,7 +8,10 @@ export const GET_Featured_LISTING = gql`
       numOfBeds
       costPerNight
       closedForBookings
-      amenities
+      amenities {
+        category
+        name
+      }
     }
   }
 `;
