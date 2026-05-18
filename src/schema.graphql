@@ -4,12 +4,36 @@ type Listing {
   numOfBeds: Int
   costPerNight: Float
   closedForBookings: Boolean
+  amenities: [Amenity!]!
 }
 
-
-type Query{
-    featuredListings: [Listing!]!
-    getListing(id: ID!): Listing
+type Query {
+  featuredListings: [Listing!]!
+  getListing(id: ID!): Listing
 }
 
+type Amenity {
+  id: ID!
+  category: String!
+  name: String!
+}
 
+type CreateListingResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  listing: Listing
+}
+
+input CreateListingInput {
+  title: String!
+  description: String!
+  numOfBeds: Int!
+  costPerNight: Float!
+  closedForBookings: Boolean
+  amenities: [ID!]!
+}
+
+type Mutation {
+  createListing(newListing: CreateListingInput): CreateListingResponse!
+}

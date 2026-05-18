@@ -1,14 +1,34 @@
-import { DataSourceContext } from "../context";
 import { Resolvers } from "../types";
 
 export const resolvers: Resolvers = {
   Query: {
-    featuredListings: (_, __, { dataSources }) => {
-      return dataSources.listingAPI.getFeaturedListings();
+    featuredListings: async(_, __, { dataSources }) => {
+      return await dataSources.listingAPI.getFeaturedListings();
     },
 
-    getListing: (_, { id }, { dataSources}) => {
-      return dataSources.listingAPI.getListing(id);
+    getListing: async(_, { id }, { dataSources }) => {
+      return await dataSources.listingAPI.getListing(id);
+    },
+  },
+
+  Mutation: {
+    createListing: async (_, { newListing }, { dataSources }) => {
+      try{
+        const listing = await dataSources.listingAPI.createListing(newListing);
+        console.log(">>>", listing)
+        return {
+          success: true,
+          code: 200,
+          message: "Listing created successfully",
+          listing,
+        };
+      } catch(err){
+        return{
+          success: false,
+          code: 500,
+          message: `Something went wrong: ${err}`
+        }
+      }
     },
   },
 };
