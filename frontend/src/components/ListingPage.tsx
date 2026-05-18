@@ -1,27 +1,31 @@
+import { useQuery } from "@apollo/client/react";
 import type { JSX } from "react";
+import { GET_Featured_LISTING } from "../gql/getListing.gql";
 
-interface Amenity {
-  id?: string;
-  name?: string;
-  category?: string;
-}
+type Amenity = {
+  id?: string | number | null;
+  name?: string | null;
+  category?: string | null;
+};
 
-interface Listing {
-  id: string;
-  title: string;
-  numOfBeds?: number;
-  costPerNight?: number;
-  closedForBookings?: boolean;
-  amenities?: Amenity[];
-}
+type FeaturedListing = {
+  id?: string | number | null;
+  title?: string | null;
+  numOfBeds?: number | null;
+  costPerNight?: number | null;
+  amenities?: Amenity[] | null;
+};
 
-interface ListingPageProps {
-  featuredListings: Listing[];
-}
+type GetFeaturedListingQuery = {
+  featuredListings?: FeaturedListing[] | null;
+};
 
-export const ListingPage = ({
-  featuredListings,
-}: ListingPageProps): JSX.Element => {
+export const ListingPage = (): JSX.Element => {
+  const { data, loading, error } = useQuery<GetFeaturedListingQuery>(GET_Featured_LISTING);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <div
       className="listings"
@@ -31,7 +35,7 @@ export const ListingPage = ({
         gap: 12,
       }}
     >
-      {featuredListings.map((eachData, idx) => (
+      {data.featuredListings.map((eachData, idx) => (
         <div
           key={eachData.id ?? idx}
           className="listing-card"
