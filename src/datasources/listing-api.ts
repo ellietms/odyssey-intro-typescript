@@ -12,11 +12,11 @@ export class ListingAPI extends RESTDataSource {
     return this.get<Listing>(`listings/${id}`);
   }
 
-  createListing(newListing:CreateListingInput): Promise<Listing> {
+  createListing(newListing: CreateListingInput): Promise<Listing> {
     return this.post<Listing>("listings", {
       body: {
-        newListing
-      }
-    })
+        listing: newListing,
+      },
+    });
   }
 }
