@@ -9,6 +9,7 @@ type Listing {
 
 type Query{
     featuredListings: [Listing!]!
+    getListing(id: ID!): Listing
 }
 
 
