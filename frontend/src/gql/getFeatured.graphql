@@ -1,0 +1,9 @@
+query GetFeatured {
+  featuredListings {
+    id
+    title
+    numOfBeds
+    costPerNight
+    closedForBookings
+  }
+}
