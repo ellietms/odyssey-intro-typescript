@@ -15,11 +15,13 @@ interface Listing {
   amenities?: Amenity[];
 }
 
-interface ListingProps {
+interface ListingPageProps {
   featuredListings: Listing[];
 }
 
-export const Listing = ({ featuredListings }: ListingProps): JSX.Element => {
+export const ListingPage = ({
+  featuredListings,
+}: ListingPageProps): JSX.Element => {
   return (
     <div
       className="listings"
