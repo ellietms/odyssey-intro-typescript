@@ -1,7 +1,8 @@
 import { useQuery } from "@apollo/client/react";
 import type { JSX } from "react";
 import { GET_Featured_LISTING } from "../gql/getListing.gql";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
 
 type Amenity = {
   id?: string | number | null;
@@ -22,6 +23,7 @@ type GetFeaturedListingQuery = {
 };
 
 export const ListingPage = (): JSX.Element => {
+  const { theme, toggleTheme } = useTheme();
   const { data, loading, error } =
     useQuery<GetFeaturedListingQuery>(GET_Featured_LISTING);
 
@@ -34,8 +36,13 @@ export const ListingPage = (): JSX.Element => {
       style={{
         display: "flex",
         gap: 12,
+        background: theme === "dark" ? "#0b0b0b" : "#ffffff",
+        color: theme === "dark" ? "#eee" : "#111",
       }}
     >
+      <div>
+        <button onClick={toggleTheme}>Theme: {theme}</button>
+      </div>
       <div style={{ marginTop: 12 }}>
         <Link to={`/createList`}>
           <button
@@ -53,7 +60,7 @@ export const ListingPage = (): JSX.Element => {
           </button>
         </Link>
       </div>
-      {data.featuredListings.map((eachData, idx) => (
+      {(data.featuredListings || []).map((eachData, idx) => (
         <div
           key={eachData.id ?? idx}
           className="listing-card"
