@@ -32,11 +32,27 @@ export const ListingPage = (): JSX.Element => {
     <div
       className="listings"
       style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        display: "flex",
         gap: 12,
       }}
     >
+      <div style={{ marginTop: 12 }}>
+        <Link to={`/createList`}>
+          <button
+            type="button"
+            style={{
+              padding: "6px 12px",
+              background: "#0d6efd",
+              color: "#fff",
+              border: "none",
+              borderRadius: 4,
+              cursor: "pointer",
+            }}
+          >
+            Add new home
+          </button>
+        </Link>
+      </div>
       {data.featuredListings.map((eachData, idx) => (
         <div
           key={eachData.id ?? idx}
