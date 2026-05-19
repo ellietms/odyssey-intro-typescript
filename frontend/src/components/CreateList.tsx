@@ -7,8 +7,7 @@ export const CreateList = (): JSX.Element => {
   const [cost, setCost] = useState<number>(0);
   const [bedNumber, setBedNumber] = useState<number>(0);
 
-  const [createListing, {  loading, error }] =
-    useMutation(CREATE_NEW_LIST);
+  const [createListing, { loading, error }] = useMutation(CREATE_NEW_LIST);
 
   const handleTitle = (event) => {
     setTitle(event.target.value);
@@ -27,10 +26,12 @@ export const CreateList = (): JSX.Element => {
       event.preventDefault();
       await createListing({
         variables: {
-          newList: {
-            title,
-            costPerNight: cost,
-            numOfBeds: bedNumber,
+          newListing: {
+            listing: {
+              title,
+              costPerNight: cost,
+              numOfBeds: bedNumber,
+            },
           },
         },
       });

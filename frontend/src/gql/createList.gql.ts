@@ -2,14 +2,16 @@ import gql from "graphql-tag";
 
 export const CREATE_NEW_LIST = gql`
   mutation createNewList($newListing: CreateListingInput) {
-    createListing(newList: $newListing) {
+    createListing(newListing: $newListing) {
       code
-      closedForBookings
-      costPerNight
-      id
-      numOfBeds
-      title
+      success
+      message
       listing {
+        title
+        description
+        numOfBeds
+        costPerNight
+        closedForBookings
         amenities {
           category
           id
