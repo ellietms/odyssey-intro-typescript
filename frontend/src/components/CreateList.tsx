@@ -1,15 +1,36 @@
-import { useEffect, useState, type JSX } from "react";
+import { useEffect, useReducer, type JSX } from "react";
 import { useMutation } from "@apollo/client/react";
 import { useNavigate } from "react-router";
 
 import { CREATE_NEW_LIST } from "../gql/createList.gql";
 
 export const CreateList = (): JSX.Element => {
-  const [title, setTitle] = useState<string>();
-  const [cost, setCost] = useState<number>(0);
-  const [bedNumber, setBedNumber] = useState<number>(0);
-  const [amenitiesId, setAmenitiesId] = useState<string[]>([]);
-  const [sucess, setSuccess] = useState(false);
+  const initialState = {
+    title: "",
+    cost: 0,
+    bedNumber: 0,
+    amenitiesId: [],
+    sucess: false,
+  };
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case "ADD_Title":
+        return { ...state, title: action.title };
+      case "COST":
+        return { ...state, cost: action.cost };
+      case "BEDROOM":
+        return { ...state, bedNumber: action.bedNumber };
+      case "AMENITIES":
+        return { ...state, amenitiesId: action.amenitiesId };
+      case "SUCCESS":
+        return { ...state, sucess: action.sucess };
+      default:
+        return state;
+    }
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   let randomNum = Math.floor(Math.random() * 100) + 11;
 
@@ -28,15 +49,23 @@ export const CreateList = (): JSX.Element => {
   );
 
   const handleTitle = (event) => {
-    setTitle(event.target.value);
+    dispatch({ type: "ADD_Title", title: event.target.value });
   };
 
   const handleCost = (event) => {
-    setCost(Number(event.target.value));
+    dispatch({ type: "COST", cost: Number(event.target.value) });
   };
 
   const handleBedNumber = (event) => {
-    setBedNumber(Number(event.target.value));
+    dispatch({ type: "BEDROOM", bedNumber: Number(event.target.value) });
+  };
+
+  const handleSelect = (event) => {
+    event.preventDefault();
+    dispatch({
+      type: "AMENITIES",
+      amenitiesId: [...new Set([...state.amenitiesId, event.target.value])],
+    });
   };
 
   const handleSubmit = async (event) => {
@@ -45,12 +74,12 @@ export const CreateList = (): JSX.Element => {
       const result = await createListing({
         variables: {
           newListing: {
-            title,
+            title: state.title,
             description: `My home-${randomNum}`,
-            costPerNight: cost,
-            numOfBeds: bedNumber,
+            costPerNight: state.cost,
+            numOfBeds: state.bedNumber,
             closedForBookings: false,
-            amenities: amenitiesId,
+            amenities: state.amenitiesId,
           },
         },
       });
@@ -61,30 +90,25 @@ export const CreateList = (): JSX.Element => {
     }
   };
 
-  const handleSelect = (event) => {
-    event.preventDefault();
-    setAmenitiesId([...new Set([...amenitiesId, event.target.value])]);
-  };
-
   useEffect(() => {
     if (data) {
-      setSuccess(true);
+      dispatch({ type: "SUCCESS", sucess: true });
     }
 
-    console.log(amenitiesId);
-  }, [data, amenitiesId]);
+    console.log(state.amenitiesId);
+  }, [data, state.amenitiesId]);
 
   return (
     <div>
       {loading && <p>Submitting…</p>}
       {error && <p>Error: {error.message}</p>}
-      {sucess && (
+      {state.sucess && (
         <>
           <p> Form is submitted successfully</p>
           <p> Submitted Data: {JSON.stringify(data)}</p>
         </>
       )}
-      {!sucess && (
+      {!state.sucess && (
         <>
           <form onSubmit={handleSubmit} style={{ margin: "10px" }}>
             <label htmlFor="title"> Title: </label>
@@ -92,7 +116,7 @@ export const CreateList = (): JSX.Element => {
               type="text"
               id="title"
               name="title"
-              value={title}
+              value={state.title}
               onChange={handleTitle}
             ></input>
             <select
@@ -114,7 +138,7 @@ export const CreateList = (): JSX.Element => {
               type="number"
               id="bedNum"
               name="bedNum"
-              value={bedNumber}
+              value={state.bedNumber}
               onChange={handleBedNumber}
             ></input>
             <label htmlFor="cost"> Cost per night:</label>
@@ -122,15 +146,15 @@ export const CreateList = (): JSX.Element => {
               type="number"
               id="cost"
               name="cost"
-              value={cost}
+              value={state.cost}
               onChange={handleCost}
             ></input>
             <button type="submit">Submit</button>
           </form>
           <br />
-          <p>title: {title}</p>
-          <p> bed numbers: {bedNumber}</p>
-          <p>cost : {cost}</p>
+          <p>title: {state.title}</p>
+          <p> bed numbers: {state.bedNumber}</p>
+          <p>cost : {state.cost}</p>
         </>
       )}
     </div>
