@@ -7,6 +7,7 @@ export const CREATE_NEW_LIST = gql`
       success
       message
       listing {
+        id
         title
         description
         numOfBeds

@@ -1,6 +1,7 @@
 type Listing {
   id: ID!
   title: String!
+  description: String!
   numOfBeds: Int
   costPerNight: Float
   closedForBookings: Boolean
